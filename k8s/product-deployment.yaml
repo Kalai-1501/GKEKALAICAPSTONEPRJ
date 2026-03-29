@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: product-service
+  labels:
+    app: product-service
 spec:
   replicas: 2
   selector:
@@ -14,9 +16,29 @@ spec:
     spec:
       containers:
       - name: product-service
-        image: asia-south1-docker.pkg.dev/citric-kit-489316-g6/kalaiartifactrepo15/product-service
+        image: <your-registry>/product-service:latest
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 5001
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 5001
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 5001
+          initialDelaySeconds: 10
+          periodSeconds: 5
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
 ---
 apiVersion: v1
 kind: Service

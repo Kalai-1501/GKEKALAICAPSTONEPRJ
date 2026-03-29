@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: cart-service
+  labels:
+    app: cart-service
 spec:
   replicas: 2
   selector:
@@ -14,9 +16,34 @@ spec:
     spec:
       containers:
       - name: cart-service
-        image: asia-south1-docker.pkg.dev/citric-kit-489316-g6/kalaiartifactrepo15/cart-service:v1
+        image: <your-registry>/cart-service:latest
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 5002
+        env:
+        - name: PRODUCT_SERVICE_URL
+          value: "http://product-service:5001"
+        - name: PAYMENT_SERVICE_URL
+          value: "http://payment-service:5003"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 5002
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 5002
+          initialDelaySeconds: 10
+          periodSeconds: 5
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
 ---
 apiVersion: v1
 kind: Service
@@ -28,4 +55,4 @@ spec:
   ports:
     - port: 5002
       targetPort: 5002
-  type: LoadBalancer
+  type: ClusterIP
