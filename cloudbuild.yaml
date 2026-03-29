@@ -3,16 +3,16 @@ steps:
 # 🔹 1. Build Images with UNIQUE TAG
  
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'asia-south1-docker.pkg.dev/citric-kit-489316-g6/kalaiartifactrepo15/product-service:$SHORT_SHA', './product-service']
+  args: ['build', '-t', 'asia-south1-docker.pkg.dev/citric-kit-489316-g6/kalaiartifactrepo15/product-service:$SHORT_SHA', 'microservices/product-service']
  
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'asia-south1-docker.pkg.dev/citric-kit-489316-g6/kalaiartifactrepo15/cart-service:$SHORT_SHA', './cart-service']
+  args: ['build', '-t', 'asia-south1-docker.pkg.dev/citric-kit-489316-g6/kalaiartifactrepo15/cart-service:$SHORT_SHA', 'microservices/cart-service']
  
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'asia-south1-docker.pkg.dev/citric-kit-489316-g6/kalaiartifactrepo15/payment-service:$SHORT_SHA', './payment-service']
+  args: ['build', '-t', 'asia-south1-docker.pkg.dev/citric-kit-489316-g6/kalaiartifactrepo15/payment-service:$SHORT_SHA', 'microservices/payment-service']
  
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'asia-south1-docker.pkg.dev/citric-kit-489316-g6/kalaiartifactrepo15/ui-service:$SHORT_SHA', './ui-service']
+  args: ['build', '-t', 'asia-south1-docker.pkg.dev/citric-kit-489316-g6/kalaiartifactrepo15/ui-service:$SHORT_SHA', 'microservices/ui-service']
  
  
 # 🔹 2. Replace image tags inside k8s YAML (GitOps style)
