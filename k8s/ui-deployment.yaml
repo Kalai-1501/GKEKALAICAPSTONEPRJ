@@ -19,6 +19,11 @@ spec:
         image: asia-south1-docker.pkg.dev/citric-kit-489316-g6/kalaiartifactrepo15/ui-service:latest
         ports:
         - containerPort: 5000
+        resources:
+            requests:
+              cpu: "50m"
+            limits:
+              cpu: "300m"
         env:
         - name: PRODUCT_SERVICE_URL
           value: "http://product-service:5001"
@@ -49,3 +54,24 @@ spec:
   ports:
     - port: 80
       targetPort: 5000
+
+--- 
+# 🔹 HPA
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: ui-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ui-service
+  minReplicas: 2
+  maxReplicas: 3
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 80      
