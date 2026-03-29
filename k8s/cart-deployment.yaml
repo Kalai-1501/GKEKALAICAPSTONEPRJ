@@ -16,8 +16,7 @@ spec:
     spec:
       containers:
       - name: cart-service
-        image: <your-registry>/cart-service:latest
-        imagePullPolicy: IfNotPresent
+        image: asia-south1-docker.pkg.dev/citric-kit-489316-g6/kalaiartifactrepo15/cart-service:latest
         ports:
         - containerPort: 5002
         env:

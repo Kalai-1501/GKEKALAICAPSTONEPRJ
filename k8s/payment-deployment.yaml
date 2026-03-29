@@ -16,8 +16,7 @@ spec:
     spec:
       containers:
       - name: payment-service
-        image: <your-registry>/payment-service:latest
-        imagePullPolicy: IfNotPresent
+        image: asia-south1-docker.pkg.dev/citric-kit-489316-g6/kalaiartifactrepo15/payment-service:latest
         ports:
         - containerPort: 5003
         livenessProbe:

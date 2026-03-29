@@ -16,15 +16,14 @@ spec:
     spec:
       containers:
       - name: ui-service
-        image: <your-registry>/ui-service:latest
-        imagePullPolicy: IfNotPresent
+        image: asia-south1-docker.pkg.dev/citric-kit-489316-g6/kalaiartifactrepo15/ui-service:latest
         ports:
         - containerPort: 5000
         env:
-        - name: CART_SERVICE_URL
-          value: "http://cart-service:5002"
         - name: PRODUCT_SERVICE_URL
           value: "http://product-service:5001"
+        - name: CART_SERVICE_URL
+          value: "http://cart-service:5002"
         livenessProbe:
           httpGet:
             path: /health
@@ -50,9 +49,9 @@ kind: Service
 metadata:
   name: ui-service
 spec:
+  type: LoadBalancer
   selector:
     app: ui-service
   ports:
-    - port: 5000
+    - port: 80
       targetPort: 5000
-  type: LoadBalancer

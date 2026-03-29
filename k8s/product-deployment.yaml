@@ -16,10 +16,12 @@ spec:
     spec:
       containers:
       - name: product-service
-        image: <your-registry>/product-service:latest
-        imagePullPolicy: IfNotPresent
+        image: asia-south1-docker.pkg.dev/citric-kit-489316-g6/kalaiartifactrepo15/product-service:latest
         ports:
         - containerPort: 5001
+        env:
+        - name: PORT
+          value: "5001"
         livenessProbe:
           httpGet:
             path: /health
