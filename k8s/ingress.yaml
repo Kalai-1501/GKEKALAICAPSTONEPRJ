@@ -1,0 +1,301 @@
+---
+# 🔐 SSL/TLS Certificate (Self-signed for testing, use GCP-managed for production)
+apiVersion: v1
+kind: Secret
+metadata:
+  name: ecommerce-tls-secret
+  namespace: ecommerce
+type: kubernetes.io/tls
+data:
+  # Generate with: openssl req -x509 -newkey rsa:2048 -keyout key.pem -out cert.pem -days 365 -nodes
+  # Then: cat cert.pem | base64 -w0
+  # For production, use Google-managed certificates instead
+  tls.crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURZakNDQWtvQ0NRRHZKUzVkQXZoeU9UQU5CZ2txaGtpRzl3MEJBUXNGQURCdk1Rc3dDUVlEVlFRR0V3SlYKVXpFTE1Ba0dBMVVFQ0FnQVFqRUxNQWtHQTFVRUJ3d0FOVEV4RXpBUkJnTlZCQW9NQ2tkdmIyZHNaU0JIYjI5bgpkR2x1WnlCVFEzSjVjSFJ2TVJzd0dRWURWUVFEREJsaGRIUmxjaTFoYkhCbGNtMXBibWN0WTI5dE1CNFhEVEl3Ck5qRTRNVEl3TXpBeFJWb1hEVEl4TmpFNE1USXdNekF4UlZvd2J6RUxNQWtHQTFVRUJoTUNWVk14Q3pBSkJnTlYKQkFnTUFVSXhDekFKQmdOVkJBY01BVk14RXpBUkJnTlZCQW9NQ2tkdmIyZHNaU0JIYjI5bmRHbHVaeUJUUTNKNQpjSFJ2TVJzd0dRWURWUVFEREJsaGRIUmxjaTFoYkhCbGNtMXBibWN0WTI5dE1JSUJJakFOQmdrcWhraUc5dzBCCkFRRUZBQU9DQVE4QU1JSUJDZ0tDQVFFQTlmVmdIdldBb21sSEh4cnp3UXhTRHVwSndkTHJGRzNkd0YzQzc4OEoKUHpFdDNuTERxVi9QN0dKdzFTZFlkMkxOMkp5dGhieWsvd0lKdHJJTnJDRnNUZ00zanljSSsxREdyMjlSRjdWQgpKNmo2TVd0RDVTTnhBOUpQMEhPVWhuYnRBWWg0U1VLa0VabXJKTHJSUVB5Y1M0dDRwWTBOK0tWMnF3TDhuc2xnCi9xUmpoMGkrbE1qWGhQejFmRDBCQWo3V1ZJQWRZVk94T1lVSW1IdXg5MWxLcjNKN2pkQkpHbzErdFBqNVhTMGUKSFZCVXpWR2NYV2J5dUdscC9QZzc2eDgwNzlkUkFnVGd1MkswMTBWbDhGbkZSOGpCTzlzcTJGa29qMitrMGlUbApRQkNJcE84UXJRb0lOSGE3eEZsVHpjb05jSmxEbU9SWEpiQlB3eFBPOVBoYW9GZUhaRHpjZXdJREFRQUJNQTBHCkNTcUdTTTNCQkFRRkFBT0NBUUVBbVVBY1FWNnZaUEovck56bFhEV0ZXOVladDd1NURZeGp3VTJ4L1lwMGhOVEIKRVUrZ3M1YmtvVlpJdENhT0FQN3NZV2k3VTBLNURQNFlJRXcxSkt2Z0phcVdBSGVIS0g1ZCtDWGlDQi85VEo2YQp2NGhibFVuc0FJVFNNM0JXbGpVcXdVQjJPdDhqaEsxUkJSQ0tWeHo2YUxCT0M2MVkwTmhrVkJ2RFovUmhvOWNiCk40eGRCWFpkSlhvdmY5M0s2RDRpSFJrMWJIL1djMHZjMEJHMGhQUXVNYWxVMGRhNU9QQjFnQzBhNU9ZV1FGRkkKNnZDbUpKYzRrUEhKTGtSdW14Mzd3K0tkdXc9PQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
+  tls.key: LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUV2QUlCQURBTkJna3Foa2lHOXcwQkFRRUZBQVNDQktZd2dna0pBZ0VBQW9JQkFRRDE5V0FkWUFvcG5SSHgKcnp3UXhTRHVwSndkTHJGRzNkd0YzQzc4OEpQekV0M25MRHFWL1A3R0p3MVNkWWQyTE4ySnl0aGJ5ay93SUoKdHJJTnJDRnNUZ00zanljSSsxREdyMjlSRjdWQko2ajZNV3RENVNOOUR5Nm9LNWpJRHRRMEhPVWhuYnRBWWg0ClNVS2tFWm1ySkxyUlFQeWNTNHQ0cFkwTitLVjJxd0w4bnNsZy9xUmpoMGkrbE1qWGhQejFmRDBCQWo3V1ZJQWQKWVZPeE9ZVUltSHV4OTFsS3IzSjdqZEJKR28xK3RQajVYUzBlSFZCVXpWR2NYV2J5dUdscC9QZzc2eDgwNzlkUgpBZ1RndTJLMDEwVmw4Rm5GUjhqQk85c3EyRmtvajIra0lUbFFCQ0lwTzhRclFvSU5IYTd4Rmx0emNvTmNKbERtCk9SWEpiQlB3eFBPOVBoYW9GZUhaRHpjZXdJREFRQUJBb0lCQVFDN1o3bHJ0TjFXaVJJUzV2OVhhaWEvdWJBdkwKWkM3K0tkdWdHQnRKdE54WE1OMzRzSXc1eHRRRXFSQWp2TGlTRjQ1Y0dNb1VmNGNoVmk3UXlJRWF4bFJpVWd6eAoyeFBxTjZnMzU3OGhwM0k4VHo3eW5xNDUwZjJlQ2FYaDhqSzVZVHBhZ0RheExSbU5uMDRkbEprZUVCUUxybWkrClp2eHdvVFlTdFpGOFRhakJCV1c3YjVaOUpCRkdpRG1lVkNjVFF3eFd5RDlBbDhsWWxsdkJ0cGkyUjBVR3p2aDAKSkhoMmwiUDEydnBvQ2JRcmdlMmozdzBtcUp3Q0ZlUT0KLS0tLS1FTkQgUFJJVkFURSBLRVktLS0tLQo=
+
+---
+# 📋 Ingress Resource with routing rules and SSL/TLS
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ecommerce-ingress
+  namespace: ecommerce
+  annotations:
+    # GCP Load Balancer annotations
+    kubernetes.io/ingress.class: "gce"
+    kubernetes.io/ingress.global-static-ip-name: "ecommerce-ip"  # Reserve a static IP in GCP
+    ingress.gcp.kubernetes.io/pre-shared-cert: "ecommerce-ssl-cert"  # Use GCP-managed certificate
+    
+    # SSL redirect
+    networking.gke.io/managed-certificates: "ecommerce-cert"
+    
+    # HTTPS redirect
+    kubernetes.io/ingress.allow-http: "false"
+    
+    # Enable CORS
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-origin: "*"
+    
+    # Rate limiting
+    nginx.ingress.kubernetes.io/limit-rps: "100"
+    
+    # Health check path
+    cloud.google.com/health-check-path: "/"
+
+spec:
+  # TLS Configuration
+  tls:
+  - hosts:
+    - "ecommerce.example.com"           # Change to your domain
+    - "api.ecommerce.example.com"
+    - "www.ecommerce.example.com"
+    secretName: ecommerce-tls-secret    # Self-signed cert (use GCP-managed for production)
+  
+  # Routing rules
+  rules:
+  
+  # 🌐 Main UI Service
+  - host: "ecommerce.example.com"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: ui-service
+            port:
+              number: 5000
+
+  # 🌐 WWW variant
+  - host: "www.ecommerce.example.com"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: ui-service
+            port:
+              number: 5000
+
+  # 📦 Product Service API
+  - host: "api.ecommerce.example.com"
+    http:
+      paths:
+      - path: /products
+        pathType: Prefix
+        backend:
+          service:
+            name: product-service
+            port:
+              number: 5001
+
+  # 🛒 Cart Service API
+      - path: /cart
+        pathType: Prefix
+        backend:
+          service:
+            name: cart-service
+            port:
+              number: 5002
+
+  # 💳 Payment Service API
+      - path: /checkout
+        pathType: Prefix
+        backend:
+          service:
+            name: payment-service
+            port:
+              number: 5003
+
+  # Health Check paths
+      - path: /health
+        pathType: Prefix
+        backend:
+          service:
+            name: ui-service
+            port:
+              number: 5000
+
+---
+# 🔐 GCP Managed Certificate (Recommended for production)
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSSLCertificate
+metadata:
+  name: ecommerce-cert
+  namespace: ecommerce
+spec:
+  certificate: |
+    -----BEGIN CERTIFICATE-----
+    # Your SSL certificate here (generated by Google)
+    -----END CERTIFICATE-----
+  privateKey: |
+    -----BEGIN PRIVATE KEY-----
+    # Your private key here
+    -----END PRIVATE KEY-----
+
+---
+# 🔗 Backend Configuration (Health checks, timeouts, etc.)
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeBackendService
+metadata:
+  name: ecommerce-backend
+  namespace: ecommerce
+spec:
+  protocol: HTTP
+  
+  # Health check configuration
+  healthCheck:
+    name: ecommerce-health-check
+  
+  # Session affinity (sticky sessions)
+  sessionAffinity: CLIENT_IP
+  
+  # Connection draining timeout
+  connectionDrainingTimeoutSec: 300
+  
+  # Timeout for backend requests
+  timeoutSec: 30
+  
+  # Enable Cloud CDN for caching
+  enableCDN: true
+  cdnPolicy:
+    cacheMode: CACHE_ALL_STATIC
+    defaultTtl: 3600
+    maxTtl: 86400
+    negativeCaching: true
+    negativeCachingPolicy:
+    - code: 404
+      ttl: 120
+    - code: 500
+      ttl: 60
+
+---
+# 🏥 Health Check Configuration
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeHealthCheck
+metadata:
+  name: ecommerce-health-check
+  namespace: ecommerce
+spec:
+  httpHealthCheck:
+    port: 5000
+    requestPath: /health
+    proxyHeader: NONE
+  
+  # Check every 10 seconds
+  checkIntervalSec: 10
+  
+  # If no response in 5 seconds, mark unhealthy
+  timeoutSec: 5
+  
+  # Consider healthy after 2 consecutive successes
+  healthyThreshold: 2
+  
+  # Consider unhealthy after 3 consecutive failures
+  unhealthyThreshold: 3
+
+---
+# 🌍 Google-Managed Certificate (Alternative to self-signed)
+apiVersion: networking.gke.io/v1
+kind: ManagedCertificate
+metadata:
+  name: ecommerce-managed-cert
+  namespace: ecommerce
+spec:
+  domains:
+  - ecommerce.example.com
+  - www.ecommerce.example.com
+  - api.ecommerce.example.com
+
+---
+# 🔐 Frontend HTTPS Configuration
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSslPolicy
+metadata:
+  name: ecommerce-ssl-policy
+  namespace: ecommerce
+spec:
+  profile: MODERN
+  minTlsVersion: TLS_1_2
+
+---
+# 📍 Static IP Address (Reserve in GCP first)
+# gcloud compute addresses create ecommerce-ip --global
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeAddress
+metadata:
+  name: ecommerce-ip
+  namespace: ecommerce
+spec:
+  addressType: EXTERNAL
+  location: global
+
+---
+# 📊 ConfigMap for Ingress Controller Configuration
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ingress-config
+  namespace: ecommerce
+data:
+  # HTTPS only (redirect HTTP to HTTPS)
+  force-ssl-redirect: "true"
+  
+  # Enable HSTS (HTTP Strict Transport Security)
+  hsts: "true"
+  hsts-max-age: "31536000"
+  hsts-include-subdomains: "true"
+  
+  # Security headers
+  add-headers: "ecommerce/custom-headers"
+  
+  # Enable gzip compression
+  enable-gzip: "true"
+  gzip-level: "6"
+  
+  # Request/Response timeouts
+  proxy-connect-timeout: "30"
+  proxy-send-timeout: "30"
+  proxy-read-timeout: "30"
+
+---
+# 🔐 Custom Security Headers
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: custom-headers
+  namespace: ecommerce
+data:
+  ecommerce/add-headers: |
+    X-Frame-Options: "SAMEORIGIN"
+    X-Content-Type-Options: "nosniff"
+    X-XSS-Protection: "1; mode=block"
+    Referrer-Policy: "strict-origin-when-cross-origin"
+    Content-Security-Policy: "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'"
+
+---
+# 📋 NetworkPolicy for Ingress (Optional but recommended)
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: ecommerce-ingress-policy
+  namespace: ecommerce
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: ecommerce
+    ports:
+    - protocol: TCP
+      port: 5000
+    - protocol: TCP
+      port: 5001
+    - protocol: TCP
+      port: 5002
+    - protocol: TCP
+      port: 5003
