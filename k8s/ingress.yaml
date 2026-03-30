@@ -18,45 +18,15 @@ kind: Ingress
 metadata:
   name: ecommerce-ingress
   annotations:
-    # ✅ GKE-native Google-managed certificate (automatically renews)
+    kubernetes.io/ingress.class: "gce"
+    # Optional: managed cert and static IP
     networking.gke.io/managed-certificates: "ecommerce-managed-cert"
-    
-    # ✅ Reserve a static global IP (must be created first)
     kubernetes.io/ingress.global-static-ip-name: "ecommerce-ip"
-    
-    # ✅ Redirect HTTP to HTTPS
     kubernetes.io/ingress.allow-http: "false"
 
 spec:
-  # Routing rules for microservices
   rules:
-  
-  # 🌐 Main UI Service
-  - host: "ecommerce.example.com"
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: ui-service
-            port:
-              number: 5000
-
-  # 🌐 WWW variant
-  - host: "www.ecommerce.example.com"
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: ui-service
-            port:
-              number: 5000
-
-  # 📦 Product Service API
-  - host: "api.ecommerce.example.com"
+  - host: ecommerce.example.com
     http:
       paths:
       - path: /products
@@ -66,8 +36,6 @@ spec:
             name: product-service
             port:
               number: 5001
-
-  # 🛒 Cart Service API
       - path: /cart
         pathType: Prefix
         backend:
@@ -75,8 +43,6 @@ spec:
             name: cart-service
             port:
               number: 5002
-
-  # 💳 Payment Service API
       - path: /checkout
         pathType: Prefix
         backend:
@@ -84,15 +50,6 @@ spec:
             name: payment-service
             port:
               number: 5003
-
-  # Health Check paths
-      - path: /health
-        pathType: Prefix
-        backend:
-          service:
-            name: ui-service
-            port:
-              number: 5000
 
 # 📝 END OF INGRESS CONFIGURATION
 # 
