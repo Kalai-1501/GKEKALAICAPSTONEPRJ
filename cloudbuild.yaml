@@ -15,7 +15,27 @@ steps:
   args: ['build', '-t', 'asia-south1-docker.pkg.dev/citric-kit-489316-g6/kalaiartifactrepo15/ui-service:$SHORT_SHA', 'microservices/ui-service']
  
  
-# 🔹 2. Replace image tags inside k8s YAML (GitOps style)
+# 🔹 2A. Reserve Static Global IP (for Ingress)
+- name: 'gcr.io/cloud-builders/gcloud'
+  args:
+    - 'compute'
+    - 'addresses'
+    - 'create'
+    - 'ecommerce-ip'
+    - '--global'
+  onFailure: ['CONTINUE']  # Continue if IP already exists
+
+# 🔹 2B. Get cluster credentials for kubectl
+- name: 'gcr.io/cloud-builders/gcloud'
+  args:
+    - 'container'
+    - 'clusters'
+    - 'get-credentials'
+    - '--project=citric-kit-489316-g6'
+    - '--zone=us-central1-f'
+    - 'kalaivani-gkecluster-1'
+
+# 🔹 2C. Replace image tags inside k8s YAML (GitOps style)
 - name: 'gcr.io/cloud-builders/gcloud'
   entrypoint: 'bash'
   args:
@@ -34,7 +54,6 @@ steps:
   env:
     - 'CLOUDSDK_COMPUTE_ZONE=us-central1-f'
     - 'CLOUDSDK_CONTAINER_CLUSTER=kalaivani-gkecluster-1'
- 
  
 # 🔹 4. Push images to Artifact Registry
 images:
