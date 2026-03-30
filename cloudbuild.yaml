@@ -15,27 +15,24 @@ steps:
   args: ['build', '-t', 'asia-south1-docker.pkg.dev/citric-kit-489316-g6/kalaiartifactrepo15/ui-service:$SHORT_SHA', 'microservices/ui-service']
  
  
-# 🔹 2A. Reserve Static Global IP (for Ingress)
+# 🔹 2A. Reserve Static Global IP (for Ingress) + Get cluster credentials
 - name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: 'bash'
   args:
-    - 'compute'
-    - 'addresses'
-    - 'create'
-    - 'ecommerce-ip'
-    - '--global'
-  onFailure: ['CONTINUE']  # Continue if IP already exists
+    - '-c'
+    - |
+      # Create static IP if it doesn't exist
+      gcloud compute addresses create ecommerce-ip --global 2>/dev/null || echo "IP already exists, skipping creation"
+      
+      # Get cluster credentials
+      gcloud container clusters get-credentials \
+        --project=citric-kit-489316-g6 \
+        --zone=us-central1-f \
+        kalaivani-gkecluster-1
+      
+      echo "✅ Static IP provisioned and cluster credentials configured"
 
-# 🔹 2B. Get cluster credentials for kubectl
-- name: 'gcr.io/cloud-builders/gcloud'
-  args:
-    - 'container'
-    - 'clusters'
-    - 'get-credentials'
-    - '--project=citric-kit-489316-g6'
-    - '--zone=us-central1-f'
-    - 'kalaivani-gkecluster-1'
-
-# 🔹 2C. Replace image tags inside k8s YAML (GitOps style)
+# 🔹 2B. Replace image tags inside k8s YAML (GitOps style)
 - name: 'gcr.io/cloud-builders/gcloud'
   entrypoint: 'bash'
   args:
